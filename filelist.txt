@@ -1,0 +1,2 @@
+C:/Users/lds/workspace/ftpsync/bin/sandin/tk/ftpsync/test/FtpSyncTest.class
+C:/Users/lds/workspace/ftpsync/src/sandin/tk/ftpsync/test/FtpSyncTest.java

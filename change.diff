@@ -1,0 +1,16 @@
+diff --git a/bin/sandin/tk/ftpsync/test/FtpSyncTest.class b/bin/sandin/tk/ftpsync/test/FtpSyncTest.class
+new file mode 100644
+index 0000000..516fa66
+Binary files /dev/null and b/bin/sandin/tk/ftpsync/test/FtpSyncTest.class differ
+diff --git a/src/sandin/tk/ftpsync/test/FtpSyncTest.java b/src/sandin/tk/ftpsync/test/FtpSyncTest.java
+new file mode 100644
+index 0000000..2aea0ed
+--- /dev/null
++++ b/src/sandin/tk/ftpsync/test/FtpSyncTest.java
+@@ -0,0 +1,6 @@
++package sandin.tk.ftpsync.test;
++
++
++public class FtpSyncTest {
++
++}
