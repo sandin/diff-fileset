@@ -5,8 +5,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Properties;
+import java.util.Date;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,17 +23,20 @@ public class FtpSync {
 	
 	public static void main(String[] args) {
 		
-		if (args.length < 2) {
-			System.out.println("filename/rootPath is null");
-			System.exit(1);
-		}
-			
-		String filename = args[0];
-		String rootPath = args[1];
-		
-		// 系统路径分隔符
-		Properties properties = System.getProperties();
-		final String DS = properties.getProperty("file.separator");
+	    Scanner in = new Scanner(System.in);
+	    
+	    System.out.println("Put your diff file:");
+	    String filename = in.nextLine();
+	    
+	    System.out.println("Put FTP server URL:");
+        String ftpUrl = in.nextLine();
+	    
+	    System.out.println("Put your local dir path:");
+        String localDir = in.nextLine();
+        
+        System.out.println("Put the server dir path:");
+        String serverDir = in.nextLine();
+        
 		
 		file = new File(filename);
 		if (! file.exists()) {
@@ -40,24 +45,30 @@ public class FtpSync {
 		}
 		
 		try {
-			ArrayList<Entity> data = parseFile(file, rootPath);
-			
-	
+			ArrayList<Entity> data = parseFile(file);
 			FileWriter fw = new FileWriter("./filelist.txt");
 			
+			String now = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
+			fw.write("# Create on " + now + " from " + file.getName() + "\n\n" );
+			fw.write("debug -o lftp-log-" + now +" 10"  + "\n");
+			fw.write("connect " + ftpUrl + "\n\n");
+			fw.write("cd " + serverDir + "\n");
+			fw.write("lcd " + localDir + "\n\n");
+			
 			for ( Entity e : data) {
-				fw.write(e.getFilename() + "\n");
+			    logger.debug("Write a line: " + e.getFilename());
+				fw.write("mput -d " + e.getFilename() + "\n");
 			}
 			fw.close();
 			
-
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
 		
 	}
+
 	
-	public static ArrayList<Entity> parseFile(File diffFile, String rootPath) throws IOException {
+	public static ArrayList<Entity> parseFile(File diffFile) throws IOException {
 		ArrayList<Entity> entities = new ArrayList<Entity>();
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		
@@ -67,14 +78,14 @@ public class FtpSync {
 				continue; // skip
 			}
 			
-			String line_mode = br.readLine(); // diff --gif 下面总至少还有一行
+			String line_mode = br.readLine(); // diff --gif
 			
 			Pattern pattern = Pattern.compile("diff --git ./([^ ]*)");
 			Matcher matcher = pattern.matcher(line);
 			if (matcher.find()) {
 				String filename = matcher.group(1);
 				
-				Entity entity = new Entity(rootPath + "/" + filename);
+				Entity entity = new Entity(filename);
 				entity.setChangedType(Entity.MODIFY);
 				entities.add(entity);
 			}

@@ -1,2 +1,10 @@
-C:/Users/lds/workspace/ftpsync/bin/sandin/tk/ftpsync/test/FtpSyncTest.class
-C:/Users/lds/workspace/ftpsync/src/sandin/tk/ftpsync/test/FtpSyncTest.java
+# Create on 2011-03-14_14-16-40
+
+debug -o lftp-log-2011-03-14_14:16:40 10
+connect ftp://ftp-user-lds:123@127.0.0.1
+
+cd wwwroot
+lcd /home/lds/workspace/java/ftpsync
+
+mput -d bin/sandin/tk/ftpsync/test/FtpSyncTest.class
+mput -d src/sandin/tk/ftpsync/test/FtpSyncTest.java
