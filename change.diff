@@ -1,16 +1,39 @@
-diff --git a/bin/sandin/tk/ftpsync/test/FtpSyncTest.class b/bin/sandin/tk/ftpsync/test/FtpSyncTest.class
-new file mode 100644
-index 0000000..516fa66
-Binary files /dev/null and b/bin/sandin/tk/ftpsync/test/FtpSyncTest.class differ
-diff --git a/src/sandin/tk/ftpsync/test/FtpSyncTest.java b/src/sandin/tk/ftpsync/test/FtpSyncTest.java
-new file mode 100644
-index 0000000..2aea0ed
---- /dev/null
-+++ b/src/sandin/tk/ftpsync/test/FtpSyncTest.java
-@@ -0,0 +1,6 @@
-+package sandin.tk.ftpsync.test;
-+
-+
-+public class FtpSyncTest {
-+
-+}
+diff --git a/application/Bootstrap.php b/application/Bootstrap.php
+index 126e322..81a4eba 100644
+--- a/application/Bootstrap.php
++++ b/application/Bootstrap.php
+@@ -76,8 +76,12 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
+ 	  		'lifetimeColumn' => 'lifetime'
+ 	    );
+ 	    // must before setSaveHandler
+-	    Zend_Session::setOptions(array('gc_maxlifetime' => strval(60*60*24*30))); // a month
++	    //Zend_Session::setOptions(array('gc_maxlifetime' => strval(60*60*24*30))); // a month
+ 	    Zend_Session::setSaveHandler(new Zend_Session_SaveHandler_DbTable($config));
++	    
++	    //if (! Zend_Session::isStarted() ) {
++            //Zend_Session::start();
++	    //}
+     }
+     
+     protected function _initAuth() {
+diff --git a/library/Ediary/Auth/Database.php b/library/Ediary/Auth/Database.php
+index 2bd7dfa..dd1b18e 100644
+--- a/library/Ediary/Auth/Database.php
++++ b/library/Ediary/Auth/Database.php
+@@ -68,6 +68,7 @@ class Ediary_Auth_Database
+             if ($rememberMe) {
+                 setcookie('ue', $loginedUser->email, time() + 2592000, '/', false);
+                 Zend_Session::rememberMe(2592000);
++                Zend_Session::getSaveHandler()->setLifetime(2592000);
+             }
+             
+             $result->result = true;
+@@ -83,7 +84,7 @@ class Ediary_Auth_Database
+     public static function logout() {
+         $user = Zend_Auth::getInstance()->getIdentity();
+         if (isset($user) && isset($user->email)) {
+-            setcookie('ue', $user->email, -1, '/', false);
++            setcookie('ue', "", time()-3600, '/', false);
+             Zend_Auth::getInstance()->clearIdentity();
+             Zend_Session::forgetMe();
+         }

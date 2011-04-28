@@ -1,10 +1,16 @@
-# Create on 2011-03-14_14-16-40
+# Create on 2011-03-14_14-28-59 from change1.diff
 
-debug -o lftp-log-2011-03-14_14:16:40 10
+debug -o lftp-log-2011-03-14_14-28-59 10
 connect ftp://ftp-user-lds:123@127.0.0.1
 
 cd wwwroot
-lcd /home/lds/workspace/java/ftpsync
+lcd /home/lds/workspace/java/ftpsync/
 
-mput -d bin/sandin/tk/ftpsync/test/FtpSyncTest.class
-mput -d src/sandin/tk/ftpsync/test/FtpSyncTest.java
+mput -d .change.diff.swp
+mput -d bin/sandin/tk/ftpsync/FtpSync.class
+mput -d change.diff
+mput -d filelist.txt
+mput -d lftp-log-2011-03-14_14:16:40
+mput -d lftp.log
+mput -d lftp.script
+mput -d src/sandin/tk/ftpsync/FtpSync.java
